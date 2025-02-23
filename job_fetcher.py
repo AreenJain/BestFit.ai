@@ -1,5 +1,4 @@
 import requests
-import config  # Store API key in config.py
 import streamlit as st
 
 api_key_1 = st.secrets["RAPIDAPI_KEY"]
