@@ -1,8 +1,11 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
+import streamlit as st
 from dotenv import load_dotenv
 load_dotenv()
 
-model=ChatGoogleGenerativeAI(model='gemini-2.0-flash-thinking-exp-01-21')
+api_key_2 = st.secrets["GOOGLE_API_KEY"]
+
+model=ChatGoogleGenerativeAI(model='gemini-2.0-flash-thinking-exp-01-21',google_api_key=api_key_2)
 
 #to get ATS score and suggestions to improve resume
 def scoring(resume,job_description):
