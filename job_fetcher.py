@@ -1,5 +1,8 @@
 import requests
 import config  # Store API key in config.py
+import streamlit as st
+
+api_key_1 = st.secrets["RAPIDAPI_KEY"]
 
 def fetch_jobs(skills, location):
     """
@@ -13,7 +16,7 @@ def fetch_jobs(skills, location):
 
     url = "https://jobs-api14.p.rapidapi.com/v2/list"  # Correct API endpoint
     headers = {
-        "X-RapidAPI-Key": config.RAPIDAPI_KEY,  # Ensure correct capitalization
+        "X-RapidAPI-Key": api_key_1,  # Ensure correct capitalization
         "X-RapidAPI-Host": "jobs-api14.p.rapidapi.com"
     }
     params = {
