@@ -37,7 +37,8 @@ def fetch_jobs(skills, location):
                 "company": job.get("company", "N/A"),
                 "location": job.get("location", "N/A"),
                 "url": job["jobProviders"][0]["url"] if job.get("jobProviders") else "#",
-                "description": job.get("description", "N/A")
+                "description": job.get("description", "N/A"),
+                "logo": job.get("image", "https://via.placeholder.com/150")
             }
             for job in jobs
         ]
