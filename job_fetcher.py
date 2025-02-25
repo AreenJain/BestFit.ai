@@ -3,7 +3,7 @@ import streamlit as st
 
 api_key_1 = st.secrets["RAPIDAPI_KEY"]
 
-def fetch_jobs(skills, location):
+def fetch_jobs(skills,location,remote_only,employment_type,experience):
     """
     Fetches jobs based on extracted skills and user-specified location.
     """
@@ -19,8 +19,11 @@ def fetch_jobs(skills, location):
         "X-RapidAPI-Host": "jobs-api14.p.rapidapi.com"
     }
     params = {
-        "query": query,
+        "query": f"{query} with {experience} experience",
         "location": location,
+        "autoTranslateLocation": "true",
+        "remoteOnly": remote_only,
+        "employmentTypes": employment_type
     }
 
     response = requests.get(url, headers=headers, params=params)
