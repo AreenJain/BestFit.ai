@@ -1,7 +1,8 @@
 import requests
 import config  # Store API key in config.py
 
-def fetch_jobs(skills, location):
+
+def fetch_jobs(skills,location,remote_only,employment_type,experience):
     """
     Fetches jobs based on extracted skills and user-specified location.
     """
@@ -17,8 +18,11 @@ def fetch_jobs(skills, location):
         "X-RapidAPI-Host": "jobs-api14.p.rapidapi.com"
     }
     params = {
-        "query": query,
+        "query": f"{query} with {experience} experience",
         "location": location,
+        "autoTranslateLocation": "true",
+        "remoteOnly": remote_only,
+        "employmentTypes": employment_type
     }
 
     response = requests.get(url, headers=headers, params=params)
@@ -35,7 +39,8 @@ def fetch_jobs(skills, location):
                 "company": job.get("company", "N/A"),
                 "location": job.get("location", "N/A"),
                 "url": job["jobProviders"][0]["url"] if job.get("jobProviders") else "#",
-                "description": job.get("description", "N/A")
+                "description": job.get("description", "N/A"),
+                "logo": job.get("image", "https://via.placeholder.com/150")
             }
             for job in jobs
         ]

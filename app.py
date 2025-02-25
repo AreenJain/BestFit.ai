@@ -1,9 +1,8 @@
 import streamlit as st
 from resume_parser import parse_resume
 from job_fetcher import fetch_jobs
-from ats_scoring import scoring, job_tittle
+from ats_scoring import scoring, job_profiles, experience
 import os
-import ast
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 
 
@@ -54,28 +53,90 @@ select = st.selectbox(
 #for finding jobs based on resume
 if select == "🔍 Find a Job":
     uploaded_file = st.file_uploader("Upload a PDF file", type=["pdf", "docx"])
+    remote_only=st.selectbox("Remote Only",options=["False","True"])
+    employment_type=st.selectbox("Employment Type",options=["Full-time","Part-time","Contract","Internship"])
     job_location=st.text_input("Enter Job Location")
     
-    if uploaded_file and job_location:
+    if uploaded_file and job_location and remote_only and employment_type:
         resume_text = parse_resume(uploaded_file)
-        job_to_search=job_tittle(resume_text['text'])
-        st.write(f"### Best Job Profiles for you: {job_to_search}")
-        job_to_search = [job.strip() for job in job_to_search.split(",")]
+        job_profile = job_profiles(resume_text['text'])
+        experience_years = experience(resume_text['text'])
+
+        st.write(f"### Best Job Profiles for you: {job_profile}")
+        st.write(f"### Total Experience: {experience_years}")
+        job_to_search = [job.strip() for job in job_profile.split(",")]
 
 
         # Fetch jobs using extracted skills
-        jobs_set1 = fetch_jobs(job_to_search[0],job_location) 
-        jobs_set2 = fetch_jobs(job_to_search[1],job_location)
-        jobs_set3 = fetch_jobs(job_to_search[2],job_location)
+        jobs_set1 = fetch_jobs(job_to_search[0],job_location,remote_only,employment_type,experience_years) 
+        jobs_set2 = fetch_jobs(job_to_search[1],job_location,remote_only,employment_type,experience_years)
+        jobs_set3 = fetch_jobs(job_to_search[2],job_location,remote_only,employment_type,experience_years)
         all_jobs = jobs_set1 + jobs_set2 + jobs_set3
+
+
+        # Styling for the job cards
+
+        st.markdown(
+            """
+            <style>
+                .job-card {
+                    background-color: #000000;
+                    padding: 15px;
+                    border-radius: 10px;
+                    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+                    margin-bottom: 15px;
+                }
+                .job-title {
+                    font-size: 18px;
+                    font-weight: bold;
+                    color: #f8f8ff;
+                }
+                .job-details {
+                    font-size: 14px;
+                    color: #f8f8ff;
+                }
+                .company-logo {
+                    width: 20px;  /* Small Logo Size */
+                    height: 20px;
+                    margin-right: 10px;
+                    vertical-align: middle;
+                }
+                .apply-button {
+                    display: inline-block;
+                    background-color: #151414;
+                    color: white;
+                    padding: 8px 15px;
+                    border-radius: 5px;
+                    text-align: center;
+                    text-decoration: none;
+                    font-size: 14px;
+                    font-weight: bold;
+                }
+                .apply-button:hover {
+                    font-weight: bold;
+                    font-size: 16px;
+                }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
     
         if all_jobs:
             st.write("### Matching Jobs")
     
+            # Display job listings
             for job in all_jobs:
-
-                # Display job details with ATS Score
-                st.markdown(f"**[{job['title']} - {job['company']} - {job['location']}]({job['url']})**")
+                with st.container():  # Creates a box around each job listing
+                    st.markdown(f"""
+                        <div class="job-card">
+                            <p class="job-title">{job['title']}</p>
+                            <p class="job-details">
+                                <img class="company-logo" src="{job['logo']}" alt="Company Logo"> {job['company']}
+                            </p>
+                            <p class="job-details">📍 {job['location']}</p>
+                            <a class="apply-button" href="{job['url']}" target="_blank">🔗 Link to Apply</a>
+                        </div>
+                    """, unsafe_allow_html=True)
 
         else:
             st.write("No matching jobs found.")
@@ -91,7 +152,40 @@ if select == "📊 Get ATS Score":
         resume_text = parse_resume(resume)
         ats= scoring(resume_text,job_description)
 
-        st.write(ats)
+        # Custom Styling for a Single Box
+        st.markdown(
+                """
+                <style>
+                    .ats-container {
+                        background-color: #000000;
+                        padding: 20px;
+                        border-radius: 10px;
+                        box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+                        margin-bottom: 20px;
+                        text-align: left;
+                        font-size: 16px;
+                        line-height: 1.6;
+                    }
+                    .ats-score {
+                        font-size: 22px;
+                        font-weight: bold;
+                        color: #007BFF;
+                   }
+                    .highlight {
+                        color: #28A745;
+                        font-weight: bold;
+                    }
+                </style>
+                """,
+                unsafe_allow_html=True
+            )
+        
+        # Display ATS Score and Suggestions Inside a Single Styled Box
+        st.markdown(f"""
+                <div class="ats-container">
+                    {ats}
+                </div>
+                """, unsafe_allow_html=True)
 
         
 
