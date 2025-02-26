@@ -6,7 +6,10 @@ import pdfkit
 import os
 
 # Path to the locally extracted wkhtmltopdf binary
-WKHTMLTOPDF_PATH = os.path.abspath("./bin/wkhtmltopdf")
+WKHTMLTOPDF_PATH = os.path.join(os.getcwd(), "bin", "wkhtmltopdf")
+
+# 🔹 Set execute permissions (Important for Streamlit Cloud)
+os.chmod(WKHTMLTOPDF_PATH, 0o755)  # 0o755 = Read & Execute permissions
 
 # Configure pdfkit to use the local binary
 config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
