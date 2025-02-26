@@ -3,6 +3,11 @@ from resume_parser import parse_resume
 from job_fetcher import fetch_jobs
 from ats_scoring import scoring, job_profiles, experience
 import os
+# Path to the locally extracted wkhtmltopdf binary
+WKHTMLTOPDF_PATH = os.path.join(os.getcwd(), "bin", "wkhtmltopdf")
+# Configure pdfkit to use the local binary
+config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
+
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 
 
