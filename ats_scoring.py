@@ -1,10 +1,11 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
-import streamlit as st
 from dotenv import load_dotenv
+import streamlit as st
 load_dotenv()
+# Load API key from Streamlit secrets
+api_key = st.secrets["GOOGLE_API_KEY"]["api_key"]
 
-
-model=ChatGoogleGenerativeAI(model='gemini-2.0-flash-thinking-exp-01-21')
+model=ChatGoogleGenerativeAI(model='gemini-2.0-flash-thinking-exp-01-21',google_api_key=api_key)
 
 #to get ATS score and suggestions to improve resume
 def scoring(resume,job_description):
@@ -49,6 +50,7 @@ def job_profiles(resume):
 
 
 
+#to get total experience from resume
 def experience(resume):
     experience=model.invoke(f"""You are an expert with over 10 years of experience in extracting total 
                             working experience from resumes.  
@@ -67,3 +69,102 @@ def experience(resume):
     return experience.content
 
                       
+def tailored_resume(resume,job_description):
+    tailored_resume=model.invoke(f"""  You are an expert with over 10 years of experience in tailoring resumes to job descriptions.
+
+I will provide you with a resume and a job description. Your task is to tailor the resume to the job description by modifying, adding, or removing content as necessary. Ensure that the tailored resume is structured professionally and formatted in HTML.
+
+Instructions:
+Maintain the following sections in the resume:
+
+Contact Information
+Professional Summary (Only if the candidate has more than 2 years of experience)
+Skills
+Experience
+Projects (Include only if the resume contains project details)
+Education
+Certifications (Include only if available in the provided resume)
+Customizations Based on Job Description:
+
+Align skills, experience, and projects with the job description.
+Use keywords and responsibilities from the job description where applicable.
+Remove irrelevant details that do not match the job description.
+Formatting Requirements:
+
+The response must be in HTML code (but in string format) following the structure below.
+Use <hr> to separate sections for a clean format.
+Keep the design simple and professional.
+Rules for Exclusions:
+
+Do not include a Professional Summary if the candidate has less than 2 years of experience.
+Do not include a Projects or Certifications section if the original resume does not have relevant information.
+Now, here is the resume and job description:
+
+Resume:
+{resume}
+
+Job Description:
+{job_description}
+
+Your Response Format:
+Provide the tailored resume as an HTML code block following this structure:
+
+html
+Copy
+Edit
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(Candidate Name) - Resume</title>
+    <style>
+        body (font-family: Arial, sans-serif; margin: 40px; )
+        h1, h2 ( color: #333; )
+        .section ( margin-bottom: 20px; )
+        hr (border: 1px solid #333; margin: 20px 0; )
+        ul () padding-left: 20px; )
+    </style>
+</head>
+<body>
+    <h1>(Candidate Name)</h1>
+    <p>Email: (Email) | Phone: (Phone) | LinkedIn: id</p>
+    <hr>
+
+    (Professional Summary (if applicable))
+
+    <div class="section">
+        <h2>Skills</h2>
+        <ul>
+            <li><strong>Languages:</strong> (Languages)</li>
+            <li><strong>Libraries:</strong> (Libraries)</li>
+            <li><strong>Tools:</strong> (Tools)</li>
+            <li><strong>Domains:</strong> (Domains)</li>
+        </ul>
+    </div>
+    <hr>
+
+    <div class="section">
+        <h2>Experience</h2>
+        Experience Details
+    </div>
+    <hr>
+
+    Projects Section (if applicable)
+
+    <div class="section">
+        <h2>Education</h2>
+        Education Details
+    </div>
+    <hr>
+
+    (Certifications Section (if applicable))
+
+</body>
+</html>
+Do not include any explanations or additional comments. Your response should only contain the tailored resume in the given HTML format.
+
+
+
+""")
+    return tailored_resume.content
