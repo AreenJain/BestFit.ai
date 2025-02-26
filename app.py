@@ -6,7 +6,7 @@ import pdfkit
 import os
 
 # Path to the locally extracted wkhtmltopdf binary
-WKHTMLTOPDF_PATH = os.path.join(os.getcwd(), "bin", "wkhtmltopdf")
+WKHTMLTOPDF_PATH = os.path.abspath("./bin/wkhtmltopdf")
 
 # Configure pdfkit to use the local binary
 config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
