@@ -1,13 +1,15 @@
 import streamlit as st
 from resume_parser import parse_resume
 from job_fetcher import fetch_jobs
-from ats_scoring import scoring, job_profiles, experience
-import os
+from ats_scoring import scoring, job_profiles, experience, tailored_resume
+import pdfkit
 # Path to the locally extracted wkhtmltopdf binary
 WKHTMLTOPDF_PATH = os.path.join(os.getcwd(), "bin", "wkhtmltopdf")
+
 # Configure pdfkit to use the local binary
 config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
 
+import os
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 
 
@@ -17,42 +19,33 @@ st.markdown("<h1 style='text-align: center; color: #4CAF50;'>🚀 BestFit.AI</h1
 # Introduction
 st.markdown(
     """
-    <div style="text-align: center; font-size: 18px;">
-        <b>Find the Best Jobs & Optimize Your Resume for Success! 🎯</b><br>
-        Our AI-driven platform helps you land your dream job by matching your resume with top job listings and optimizing it for ATS systems.
+    <div style="text-align: center; font-size: 20px;">
+        <b> Your AI-Powered Job & Resume Assistant! 🎯</b><br>
+        Optimize your resume, match with top job listings, and generate tailored resumes effortlessly.
     </div>
-    """,
-    unsafe_allow_html=True
+    """, unsafe_allow_html=True
 )
 
 # Features Section
 st.markdown("""
-    ### 🔥 What We Offer?
-    🛠 **Find the Best Jobs** – Upload your resume, and we’ll match you with top job listings based on your skills.<br>
-    📊 **ATS Score & Optimization** – See how well your resume matches a job description and get suggestions to improve it.<br>
-    🚀 **Direct Apply Links** – No more searching! Instantly access job application links.<br>
-    📈 **Resume Enhancement Tips** – Boost your chances of getting shortlisted with AI-powered insights.<br>
-    """, unsafe_allow_html=True)
+### 🔥 Key Features  
+🔍 **Find the Best Jobs** – AI matches your resume with top job listings & provides direct apply links.  
+📊 **ATS Score & Resume Optimization** – Get an ATS score & AI-powered improvement suggestions.  
+📝 **Tailored Resume Generator** – Upload job descriptions & generate an optimized resume instantly.  
+""", unsafe_allow_html=True)
 
 # How It Works
 st.markdown("""
-    ### 📌 How It Works?
-    1️⃣ **Find the Best Jobs**  
-       - Upload your resume 📄  
-       - AI extracts key skills & experience 🔍  
-       - Matches jobs from **LinkedIn, Indeed, etc.** 📢  
-       - Provides ATS score & **direct apply links** 🚀  
-    
-    2️⃣ **Optimize Your Resume for ATS**  
-       - Upload your resume & job description 📝  
-       - Get an ATS compatibility score 📊  
-       - Receive **custom AI-powered improvement tips** to boost your resume 💡  
-    """, unsafe_allow_html=True)
+### 📌 How It Works  
+1️⃣ **Find Jobs** – Upload resume & get matched job listings with apply links.  
+2️⃣ **Optimize Resume** – Upload job descriptions & improve ATS compatibility.  
+3️⃣ **Generate Tailored Resume** – AI rewrites & optimizes your resume for the job.  
+""", unsafe_allow_html=True)
     
 # User Selection Box
 select = st.selectbox(
     "What would you like to do?",
-    ["Select an option", "🔍 Find a Job", "📊 Get ATS Score"]
+    ["Select an option", "🔍 Find a Job", "📊 Get ATS Score","🤖AI-Powered Resume Customization"]
 )
 
 #for finding jobs based on resume
@@ -194,3 +187,22 @@ if select == "📊 Get ATS Score":
 
         
 
+
+
+if select == "🤖AI-Powered Resume Customization":
+    resume=st.file_uploader("Upload Your Resume in PDF or in DOCX",type=['pdf','docx'])
+    job_description=st.text_area("Paste Job Description")
+
+    if resume and job_description:
+        resume_text = parse_resume(resume)
+        new_tailored_resume=tailored_resume(resume_text,job_description)
+
+        pdf_path = "Tailored.pdf"
+        pdfkit.from_string(new_tailored_resume, pdf_path)
+
+        # Provide download option
+        with open(pdf_path, "rb") as f:
+            st.download_button(label="📥 Download Tailored Resume",
+                               data=f,
+                               file_name="Tailored_Resume.pdf",
+                               mime="application/pdf")
