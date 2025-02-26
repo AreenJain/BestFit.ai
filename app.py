@@ -4,13 +4,12 @@ from job_fetcher import fetch_jobs
 from ats_scoring import scoring, job_profiles, experience, tailored_resume
 import pdfkit
 import os
-from weasyprint import HTML
 
-# # Path to the locally extracted wkhtmltopdf binary
-# WKHTMLTOPDF_PATH = os.path.abspath("./bin/wkhtmltopdf")
+# Path to the locally extracted wkhtmltopdf binary
+WKHTMLTOPDF_PATH = os.path.abspath("./bin/wkhtmltopdf")
 
-# # Configure pdfkit to use the local binary
-# config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
+# Configure pdfkit to use the local binary
+config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
 
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 
@@ -200,8 +199,8 @@ if select == "🤖AI-Powered Resume Customization":
         new_tailored_resume=tailored_resume(resume_text,job_description)
 
         pdf_path = "Tailored.pdf"
-        # pdfkit.from_string(new_tailored_resume, pdf_path)
-        HTML(string=new_tailored_resume).write_pdf(pdf_path)
+        pdfkit.from_string(new_tailored_resume, pdf_path)
+       
 
         # Provide download option
         with open(pdf_path, "rb") as f:
