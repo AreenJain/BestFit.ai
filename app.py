@@ -203,9 +203,25 @@ if select == "🤖AI-Powered Resume Customization":
     if resume and job_description:
         resume_text = parse_resume(resume)
         new_tailored_resume=tailored_resume(resume_text,job_description)
+        import pdfcrowd
+        import sys
+        API = st.secrets["API"]
 
-        pdf_path = "Tailored.pdf"
-        pdfkit.from_string(new_tailored_resume, pdf_path)
+        try:
+             # Create an API client instance.
+             client = pdfcrowd.HtmlToPdfClient('areen_jain_', API)
+
+             # Specify the mapping of HTML content width to the PDF page width.
+             # To fine-tune the layout, you can specify an exact viewport width, such as '960px'.
+             client.setContentViewportWidth('balanced')
+             pdf_path = "Tailored.pdf"
+
+             # Run the conversion and save the result to a file.
+             client.convertStringToFile(new_tailored_resume, pdf_path)
+    
+        except pdfcrowd.Error as why:
+            sys.stderr.write('Pdfcrowd Error: {}\n'.format(why))
+            raise
        
 
         # Provide download option
