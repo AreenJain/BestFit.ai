@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import streamlit as st
 load_dotenv()
 # Load API key from Streamlit secrets
-api_key = st.secrets["GOOGLE_API_KEY"]["api_key"]
+api_key = st.secrets["GOOGLE_API_KEY"]
 
 model=ChatGoogleGenerativeAI(model='gemini-2.0-flash-thinking-exp-01-21',google_api_key=api_key)
 
