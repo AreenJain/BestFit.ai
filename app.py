@@ -5,11 +5,14 @@ from ats_scoring import scoring, job_profiles, experience, tailored_resume
 import pdfkit
 import os
 
+
+import subprocess
+
+# Grant execution permissions using subprocess
+subprocess.run(["chmod", "+x", os.path.join(os.getcwd(), "bin", "wkhtmltopdf")])
+
 # Path to the locally extracted wkhtmltopdf binary
 WKHTMLTOPDF_PATH = os.path.join(os.getcwd(), "bin", "wkhtmltopdf")
-
-# 🔹 Set execute permissions (Important for Streamlit Cloud)
-os.chmod(WKHTMLTOPDF_PATH, 0o755)  # 0o755 = Read & Execute permissions
 
 # Configure pdfkit to use the local binary
 config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
