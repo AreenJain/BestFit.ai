@@ -15,7 +15,7 @@ st.markdown("<h1 style='text-align: center; color: #4CAF50;'>🚀 BestFit.AI</h1
 st.markdown(
     """
     <div style="text-align: center; font-size: 20px;">
-        <b> Your AI-Powered Job & Resume Assistant! 🎯</b><br>
+        <b> Your AI-Powered Job Assistant! 🎯</b><br>
         Optimize your resume, match with top job listings, and generate tailored resumes effortlessly.
     </div>
     """, unsafe_allow_html=True
