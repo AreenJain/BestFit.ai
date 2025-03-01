@@ -1,5 +1,6 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv
+from langchain_core.prompts import PromptTemplate
 import streamlit as st
 load_dotenv()
 # Load API key from Streamlit secrets
