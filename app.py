@@ -193,7 +193,7 @@ if select == "📊 ATS Insights":
      
 
 
-if select == "🤖AI-Powered Resume Customization":
+if select == "🤖AI-Optimized Resume":
     st.title("🤖AI-Optimized Resume")
     resume=st.file_uploader("Upload Your Resume in PDF or in DOCX",type=['pdf','docx'])
     job_description=st.text_area("Paste Job Description")
