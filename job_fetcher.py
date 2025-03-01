@@ -3,45 +3,50 @@ import streamlit as st
 
 api_key = st.secrets["RAPIDAPI_KEY"]
 
-def fetch_jobs(skills,location,remote_only,employment_type,experience):
+def fetch_jobs(skills,location,remote_only,employment_type):
     """
     Fetches jobs based on extracted skills and user-specified location.
     """
     if not skills:
         return ["NO SKILLS FOUND!!"]
+    
 
-    query = skills  # Ensure the query format is correct
-    location = location # Format location
 
-    url = "https://jobs-api14.p.rapidapi.com/v2/list"  # Correct API endpoint
+    query = skills  
+    location = location 
+
+    url = "https://jobs-search-api.p.rapidapi.com/getjobs"  # API endpoint
     headers = {
-        "X-RapidAPI-Key": api_key,  # Ensure correct capitalization
-        "X-RapidAPI-Host": "jobs-api14.p.rapidapi.com"
+        "x-rapidapi-key": api_key,
+	    "x-rapidapi-host": "jobs-search-api.p.rapidapi.com",
+	    "Content-Type": "application/json"
     }
     params = {
-        "query": f"{query} with {experience} experience",
-        "location": location,
-        "autoTranslateLocation": "true",
-        "remoteOnly": remote_only,
-        "employmentTypes": employment_type
+        "search_term": query,
+	    "location": location,
+	    "results_wanted": 10,
+	    "site_name": ["indeed", "linkedin", "zip_recruiter", "glassdoor"],
+	    "job_type": employment_type,
+	    "is_remote": remote_only,
+	    "hours_old": 168
     }
 
-    response = requests.get(url, headers=headers, params=params)
+    response = requests.post(url, json=params, headers=headers)
 
     # Debugging: Print details for troubleshooting
     print(f"Status Code: {response.status_code}")
     print(f"Params: {params}")
 
     if response.status_code == 200:
-        jobs = response.json().get("jobs", [])  # Adjust based on API response structure
+        jobs = response.json().get("jobs", []) 
         return [
             {
+                "site": job.get("site", "N/A"),
                 "title": job.get("title", "N/A"),
                 "company": job.get("company", "N/A"),
-                "location": job.get("location", "N/A"),
-                "url": job["jobProviders"][0]["url"] if job.get("jobProviders") else "#",
-                "description": job.get("description", "N/A"),
-                "logo": job.get("image", "https://via.placeholder.com/150")
+                "location": job.get("location") or "Remote",
+                "url": job.get("job_url", "#"),
+                "date_posted": job.get("date_posted", "N/A")
             }
             for job in jobs
         ]
