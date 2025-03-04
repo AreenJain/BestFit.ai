@@ -46,7 +46,7 @@ def fetch_jobs(skills,location,remote_only,employment_type):
                 "company": job.get("company", "N/A"),
                 "location": job.get("location") or "Remote",
                 "url": job.get("job_url", "#"),
-                "date_posted": job.get("date_posted", "N/A")
+                "date_posted": job.get("date_posted") or "N/A"
             }
             for job in jobs
         ]
