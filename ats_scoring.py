@@ -31,7 +31,11 @@ def scoring(resume, job_description):
         - Use **emojis** to make output more attractive.
         - If the provided content **is not a resume**, return this message:  
           **"IT'S NOT A RESUME"** in **bold and big letters** (Detect this by checking for sections like "Skills," "Experience," and "Education").  
-        - in important note if user experience is low than tell the user about this else tell something important.(eg: low experience)
+        - Write a section titled '### Important Note' in markdown format. If the job requires X years of experience and the user has
+        less than X years, state that requirement clearly. If the user meets or exceeds the required experience, provide an important 
+        insight under this section, such as a key achievement, relevant project, or a strong skill that makes them a great fit.
+
+        
         Resume Content: {resume}  
 
         Job Description:{job_description}  
