@@ -6,7 +6,7 @@ load_dotenv()
 # Load API key from Streamlit secrets
 api_key = st.secrets["GOOGLE_API_KEY"]
 
-model=ChatGoogleGenerativeAI(model='gemini-2.0-flash-thinking-exp-01-21',google_api_key=api_key)
+model = ChatGoogleGenerativeAI(model='gemini-2.0-pro-exp-02-05',google_api_key=api_key, temperature=0)
 
 # to get ATS score and suggestions to improve resume
 def scoring(resume, job_description):
@@ -21,6 +21,7 @@ def scoring(resume, job_description):
            - ### **Experience and Projects** 
            -### **Formatting errors** 
            - ### **Other Improvements**  
+           - ### **Important Note ** 
 
         Response Format:
         ---
@@ -30,7 +31,7 @@ def scoring(resume, job_description):
         - Use **emojis** to make output more attractive.
         - If the provided content **is not a resume**, return this message:  
           **"IT'S NOT A RESUME"** in **bold and big letters** (Detect this by checking for sections like "Skills," "Experience," and "Education").  
-
+        - in important note if user experience is low than tell the user about this else tell something important.(eg: low experience)
         Resume Content: {resume}  
 
         Job Description:{job_description}  
@@ -109,7 +110,7 @@ def tailored_resume(resume, job_description):
             - Experience
             - Projects (Include only if the resume contains project details)
             - Education
-            - Certifications (Include only if available in the provided resume)
+            - Certifications (Include only if available in the provided resume and add certificate which are releted to job)
 
         Customizations Based on Job Description:
         - Align skills, experience, and projects with the job description.
@@ -204,9 +205,9 @@ def linkedin_optimization(profile):
         visibility and engagement. When I provide a LinkedIn profile as a PDF, your task is to analyze 
         the content and offer structured, actionable feedback.
 
-        Your response should follow this format:
-        ---
+        Your response should follow this format and do not add anything else:
 
+        ---
         ### **Rating & Review of Your LinkedIn Profile**
 
         ---
@@ -254,4 +255,3 @@ def linkedin_optimization(profile):
     prompt = template.format(profile=profile)
     result = model.invoke(prompt)
     return result.content
-
