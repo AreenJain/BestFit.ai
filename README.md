@@ -6,36 +6,44 @@
 </head>
 <body>
 
-<h1 align="center">🚀 BestFit.AI - Your AI-Powered Job Assistant</h1>
+<h1 align="center">🚀 BestFit.AI - Your AI-Powered Career Assistant 🎯</h1>
 
 <p align="center">
-    <b>Find the Best Jobs & Optimize Your Resume for Success! 🎯</b><br>
-    An AI-driven platform that helps you land your dream job by matching your resume with job listings, optimizing it for ATS systems, and enhancing your LinkedIn profile.
+    <b>Find jobs, optimize your resume, tailor applications, and prepare for interviews with AI-driven insights.</b>
 </p>
+
+<hr>
 
 <h2>🔥 Key Features</h2>
 <ul>
-    <li>🔍 <b>Find the Best Jobs</b> – AI scans and matches your resume with top job listings & provides direct apply links.</li>
+    <li>🔍 <b>Find the Best Jobs</b> – AI matches your resume with top job listings & provides direct apply links.</li>
     <li>📊 <b>ATS Score & Resume Optimization</b> – Get an ATS score & AI-powered improvement suggestions.</li>
     <li>📝 <b>Tailored Resume Generator</b> – Upload job descriptions & generate an optimized resume instantly.</li>
     <li>🔗 <b>LinkedIn Profile Optimizer</b> – Enhance your LinkedIn profile with AI-driven suggestions for better visibility.</li>
+    <li>🎯 <b>AI Interview Coach</b> – Practice mock interviews and get AI-driven answers & feedback.</li>
 </ul>
 
-<h2>📌 How It Works?</h2>
+<hr>
+
+<h2>📌 How It Works</h2>
 <ol>
     <li><b>Find Jobs</b> – Upload your resume & get AI-matched job listings with direct apply links.</li>
-    <li><b>Optimize Resume</b> – Upload a job description & receive ATS compatibility improvements.</li>
+    <li><b>Optimize Resume</b> – Upload job descriptions & improve ATS compatibility.</li>
     <li><b>Generate Tailored Resume</b> – AI rewrites & optimizes your resume to match job requirements.</li>
     <li><b>Optimize LinkedIn Profile</b> – Get AI-powered insights to boost your LinkedIn visibility.</li>
+    <li><b>Practice Interviews</b> – Ask AI interview questions and get smart responses & feedback.</li>
 </ol>
+
+<hr>
 
 <h2>⚡ Tech Stack</h2>
 <ul>
     <li><b>Frontend:</b> Streamlit</li>
     <li><b>Backend:</b> Python, LangChain, Gemini API</li>
     <li><b>Job Data:</b> RapidAPI</li>
-    <li><b>PDF Generation:</b> PDFCrowd API</li>
 </ul>
+
+<hr>
 
 <h2>📥 Installation & Usage</h2>
 <pre>
@@ -49,11 +57,13 @@
    <code>streamlit run app.py</code>
 </pre>
 
+<hr>
+
 <h2>🙌 Contributing</h2>
 <p>Feel free to submit issues or pull requests to improve BestFit.AI!</p>
 
 <h2>📩 Contact</h2>
-<p>For queries or suggestions, reach out via <a href="[https://www.linkedin.com/in/areenjain/]">LinkedIn</a>.</p>
+<p>For queries or suggestions, reach out via <a href="https://www.linkedin.com/in/areenjain">LinkedIn</a>.</p>
 
 </body>
 </html>
