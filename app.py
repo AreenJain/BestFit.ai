@@ -1,7 +1,7 @@
 import streamlit as st
 from resume_parser import parse_resume
 from job_fetcher import fetch_jobs
-from ats_scoring import scoring, job_profiles,extract_experience, tailored_resume,linkedin_optimization
+from ats_scoring import scoring, job_profiles,extract_experience, tailored_resume,linkedin_optimization,prepare_for_job_interview
 import pdfkit
 import os
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
@@ -15,8 +15,8 @@ st.markdown("<h1 style='text-align: center; color: #4CAF50;'>🚀 BestFit.AI</h1
 st.markdown(
     """
     <div style="text-align: center; font-size: 20px;">
-        <b> Your AI-Powered Job Assistant! 🎯</b><br>
-        Optimize your resume, match with top job listings, and generate tailored resumes effortlessly.
+        <b>🚀 Your AI-Powered Career Assistant! 🎯</b><br>
+        Find jobs, optimize your resume, tailor applications, and prepare for interviews with AI-driven insights.
     </div>
     """, unsafe_allow_html=True
 )
@@ -28,22 +28,14 @@ st.markdown("""
 📊 **ATS Score & Resume Optimization** – Get an ATS score & AI-powered improvement suggestions.  
 📝 **Tailored Resume Generator** – Upload job descriptions & generate an optimized resume instantly.  
 🔗 **LinkedIn Profile Optimizer** – Enhance your LinkedIn profile with AI-driven suggestions for better visibility.  
-""", unsafe_allow_html=True)
-
-# How It Works
-st.markdown("""
-### 📌 How It Works  
-1️⃣ **Find Jobs** – Upload resume & get matched job listings with apply links.  
-2️⃣ **Optimize Resume** – Upload job descriptions & improve ATS compatibility.  
-3️⃣ **Generate Tailored Resume** – AI rewrites & optimizes your resume for the job.  
-4️⃣ **Optimize LinkedIn Profile** – Get AI-powered insights to enhance your LinkedIn profile.  
+🎯 **AI Interview Coach** – Practice mock interviews and get AI-driven answers & feedback.  
 """, unsafe_allow_html=True)
 
     
 # User Selection Box
 select = st.selectbox(
     "What would you like to do?",
-    ["Select an option", "🔍 Find a Job", "📊 ATS Insights","🤖AI-Optimized Resume","🚀LinkedIn Profile Optimizer"]
+    ["Select an option", "🔍 Find a Job", "📊 ATS Insights","🤖AI-Optimized Resume","🚀LinkedIn Profile Optimizer","🎯 AI Interview Coach"]
 )
 
 #for finding jobs based on resume
@@ -190,7 +182,8 @@ if select == "📊 ATS Insights":
                 </div>
                 """, unsafe_allow_html=True)
 
-     
+        
+
 
 
 if select == "🤖AI-Optimized Resume":
@@ -207,26 +200,9 @@ if select == "🤖AI-Optimized Resume":
     if go and resume and job_description:
         resume_text = parse_resume(resume)
         new_tailored_resume=tailored_resume(resume_text,job_description)
-        import pdfcrowd
-        import sys
-        API = st.secrets["API"]
 
-        try:
-             # Create an API client instance.
-             client = pdfcrowd.HtmlToPdfClient('areen_jain_', API)
-
-             # Specify the mapping of HTML content width to the PDF page width.
-             # To fine-tune the layout, you can specify an exact viewport width, such as '960px'.
-             client.setContentViewportWidth('balanced')
-             pdf_path = "Tailored.pdf"
-
-             # Run the conversion and save the result to a file.
-             client.convertStringToFile(new_tailored_resume, pdf_path)
-    
-        except pdfcrowd.Error as why:
-            sys.stderr.write('Pdfcrowd Error: {}\n'.format(why))
-            raise
-       
+        pdf_path = "Tailored.pdf"
+        pdfkit.from_string(new_tailored_resume, pdf_path)
 
         # Provide download option
         with open(pdf_path, "rb") as f:
@@ -234,6 +210,7 @@ if select == "🤖AI-Optimized Resume":
                                data=f,
                                file_name="Tailored_Resume.pdf",
                                mime="application/pdf")
+
 
 
 #optimizing linkedin profile
@@ -284,3 +261,51 @@ if select == "🚀LinkedIn Profile Optimizer":
                     {suggestions}
                 </div>
                 """, unsafe_allow_html=True)
+
+
+
+if select=="🎯 AI Interview Coach":
+
+    st.title("🎯 AI Interview Coach")
+    st.write("Prepare for your job interview with expert guidance! 🚀")
+
+    st.markdown("""
+    <style>
+        .stChatMessage { font-size: 16px; border-radius: 10px; padding: 10px; }
+        .stChatMessageUser { background-color: #4CAF50; color: white; }
+        .stChatMessageBot { background-color: #2E3B4E; color: white; }
+        .stTextInput>div>div>input { font-size: 16px; }
+        .stButton>button { font-size: 16px; }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Initialize Chat History 
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
+    
+    # Display chat history
+    for msg in st.session_state.messages:
+        role = "user" if msg["role"] == "user" else "assistant"
+        with st.chat_message(role):
+            st.markdown(msg["content"])
+    
+    # Chat Input 
+    user_input = st.chat_input("Ask me anything about job interviews or paste a job description...")
+    
+    if user_input:
+        # Display user message
+        st.session_state.messages.append({"role": "user", "content": user_input})
+        with st.chat_message("user"):
+            st.markdown(user_input)
+    
+        # Get AI Response (Pass Chat History) 
+        chat_history = [msg["content"] for msg in st.session_state.messages]
+        bot_reply = prepare_for_job_interview(user_input, chat_history)
+    
+        # Display bot response
+        with st.chat_message("assistant"):
+            st.markdown(bot_reply)
+    
+        # Store bot response in chat history
+        st.session_state.messages.append({"role": "assistant", "content": bot_reply})
+    
