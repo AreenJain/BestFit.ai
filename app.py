@@ -199,9 +199,10 @@ if select == "🤖AI-Optimized Resume":
         st.warning("Please paste the job description to generate a tailored resume.")
 
     if go and resume and job_description:
-        client = pdfcrowd.HtmlToPdfClient('areen_jain_', API)
+        html=tailored_resume(resume,job_description)
+        client = pdfcrowd.HtmlToPdfClient('areen_jain_', API_KEY)
         client.setContentViewportWidth('balanced')
-        client.convertStringToFile('API', 'Tailored_Resume.pdf')
+        client.convertStringToFile(html, 'Tailored_Resume.pdf')
 
 
         # Provide download option
