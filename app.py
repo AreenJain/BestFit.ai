@@ -2,9 +2,10 @@ import streamlit as st
 from resume_parser import parse_resume
 from job_fetcher import fetch_jobs
 from ats_scoring import scoring, job_profiles,extract_experience, tailored_resume,linkedin_optimization,prepare_for_job_interview
-import pdfkit
+import pdfcrowd
 import os
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
+API_KEY = st.secrets["API"]
 
 st.set_page_config(page_title="BestFit.AI", page_icon="🚀", layout="wide")
 
@@ -198,11 +199,10 @@ if select == "🤖AI-Optimized Resume":
         st.warning("Please paste the job description to generate a tailored resume.")
 
     if go and resume and job_description:
-        resume_text = parse_resume(resume)
-        new_tailored_resume=tailored_resume(resume_text,job_description)
+        client = pdfcrowd.HtmlToPdfClient('areen_jain_', API)
+        client.setContentViewportWidth('balanced')
+        client.convertStringToFile('API', 'Tailored_Resume.pdf')
 
-        pdf_path = "Tailored.pdf"
-        pdfkit.from_string(new_tailored_resume, pdf_path)
 
         # Provide download option
         with open(pdf_path, "rb") as f:
