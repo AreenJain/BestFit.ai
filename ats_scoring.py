@@ -264,7 +264,7 @@ def linkedin_optimization(profile):
 def prepare_for_job_interview(user_input, chat_history):
     template = ChatPromptTemplate.from_template( """
                  You are an advanced AI mock interview coach. Ask the user to enter either a job title or full job description. 
-                  Based on the input ({job_input}), generate role-specific technical and behavioral interview questions.
+                  Based on the input, generate role-specific technical and behavioral interview questions.
 
 Evaluate answers with:
 - Strengths and weaknesses
