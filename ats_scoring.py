@@ -272,6 +272,12 @@ Evaluate answers with:
 - Confidence rating (1-10)
 - Follow-up tips
 
+**Chat History (for context):** {chat_history}  
+
+---
+### **User Input:**  
+{user_input} 
+
 Keep the interaction professional and supportive. Prepare them thoroughly for real interviews.
 """)
 
