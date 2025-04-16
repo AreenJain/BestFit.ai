@@ -200,7 +200,7 @@ if select == "🤖AI-Optimized Resume":
 
     if go and resume and job_description:
         html=tailored_resume(resume,job_description)
-        client = pdfcrowd.HtmlToPdfClient('areen_jain_', API_KEY)
+        client = pdfcrowd.HtmlToPdfClient('areen___', API_KEY)
         client.setContentViewportWidth('balanced')
         pdf_path='Tailored_Resume.pdf'
         client.convertStringToFile(html, pdf_path)
