@@ -6,7 +6,7 @@ load_dotenv()
 # Load API key from Streamlit secrets
 api_key = st.secrets["GOOGLE_API_KEY"]
 
-model = ChatGoogleGenerativeAI(model='gemini-2.0-pro-exp-02-05',google_api_key=api_key, temperature=0)
+model = ChatGoogleGenerativeAI(model='gemini-2.5-pro',google_api_key=api_key, temperature=0)
 
 # to get ATS score and suggestions to improve resume
 def scoring(resume, job_description):
